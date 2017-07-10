@@ -1,0 +1,20 @@
+language: go
+go:
+  - 1.8
+  - tip
+
+env:
+  - GOROOT=/usr/local/go
+
+before_script:
+  - mkdir -p $GOPATH/bin
+  - make deps
+
+matrix:
+  allow_failures:
+    - go: tip  
+
+script:
+  - go vet $(go list ./... | grep -v /vendor/)
+  - go test $(go list ./... | grep -v /vendor/)
+  - make
